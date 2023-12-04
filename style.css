@@ -12,25 +12,23 @@ background-image: url(gtabackground.jpg);
 background-size: cover;
 
   }
-  table {  
-    font-family:sans-serif;
-    th, td {
-      padding:.25em .5em;
-      text-align:left;
-      &:nth-child(2) {
-        text-align:right;
-      }
-    }
-    td {
-      background-color:#eee;    
-    }
-    th {
-      background-color:#009;
-      color:#fff;
-    }
-  }
+#cheats{
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+#divWithNames{
+  display: flex;
+  flex-direction: column;
+}
   
-  #anadir {
+#anadir {
 margin: 40px;
 
   }
+
+.columns {
+  display: flex;
+  flex-direction: column;
+}
