@@ -23,3 +23,10 @@
 Answer: I keep on getting the following error message when I try to move all resources in the rg-fluidtasks-serverless resource group to rg-fluidtasks-serverless-01 which is in another subscription:
 
 {'message':'Resource move validation failed. Please see details. Diagnostic information: timestamp '20240704T171347Z', subscription id '4e166612-47b9-4576-8b11-541c03ed5f94', tracking id '63f44a08-bf22-4772-bc41-ed85d54f73ed', request correlation id '1692a145-bc2e-416b-9818-5b16bbe0377d'. (Code: ResourceMoveProviderValidationFailed) Please select all the Microsoft.Web resources from 'rg-fluidtasks-serverless' resource group for cross-subscription migration. Also, please ensure destination resource group 'rg-fluidtasks-serverless-01' doesn't have any Microsoft.Web resources before move operation. Here is the list of resources you have to move together: drimkoe-humanresourcesapi (Microsoft.Web/sites)\\r\\n drimkoe-crmapi (Microsoft.Web/sites)\\r\\n drimkoe-settingsapi (Microsoft.Web/sites)\\r\\n drimkoe-tenantsapi (Microsoft.Web/sites)\\r\\n drimkoe-insuranceapi (Microsoft.Web/sites)\\r\\n drimkoe-claimsapi (Microsoft.Web/sites)\\r\\n drimkoe-customizationapi (Microsoft.Web/sites)\\r\\n drimkoe-accountsapi (Microsoft.Web/sites)\\r\\n drimkoe-productsapi (Microsoft.Web/sites)\\r\\n drimkoe-tasksapi (Microsoft.Web/sites)\\r\\n... and 17 more. Please check https://portal.azure.com/?websitesextension_ext=asd.featurePath%3Ddetectors%2FMigration#resource/subscriptions/4e166612-47b9-4576-8b11-541c03ed5f94/resourceGroups/rg-fluidtasks-serverless/providers/Microsoft.Web/sites/drimkoe-humanresourcesapi/troubleshoot for more information. (Code: BadRequest, Target: Microsoft.Web/serverFarms)','code':'ResourceMoveProviderValidationFailed','name':'c0d6e395-c5ce-47a6-b231-59c83c23431f','status':409}
+
+
+# Log in to Azure
+az login
+
+# Move resources
+az resource move --destination-group rg-fluidtasks-serverless-01 --ids <resource-id-1> <resource-id-2> ... <resource-id-n>
