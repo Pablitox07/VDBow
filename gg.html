@@ -17,3 +17,92 @@
 
 </body>
 </html>
+
+
+Thank you for your reply and advice on how to get more details on what my Web App is doing.
+
+ 
+
+I have found a solution to the problem.  Changing the version number of the package that fails to load from 8.0.3.0 to 8.0.6.0 solved the problem as detailed in below in a message to our team.
+
+ 
+
+It seems that Azure .net runtime is altering the package reference when it trying to load at runtime the Microsoft.Extensions.Logging.AzureAppServices module.  Version 8.0.3.0 compiles and runs in the local dev environment. 
+
+ 
+
+Why does this happen when running in the cloud??
+
+Version 8.0.3.0 was working until 2 days ago.  In fact, it is still working on one of the deployment slots.
+
+ 
+
++++++
+
+EagleNest production stopped running at around Sunday at 9pm.  Webpage would not load and Parent (phone) App would revert to login and fail to login in.
+
+It was crashing during early startup.  To see what happened, using a WinSCP (windows ftp client), with the login credentials from the publish profile, look in /LogFiles/EventLog.xlm
+
+<EventData>
+
+<Data>Application: w3wp.exe
+
+CoreCLR Version: 8.0.524.21615
+
+.NET Version: 8.0.5
+
+ 
+
+Description: The process was terminated due to an unhandled exception.
+
+Exception Info: System.IO.FileNotFoundException: Could not load file or assembly 'Microsoft.Extensions.Logging.AzureAppServices, Version=8.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. The system cannot find the file specified.
+
+File name: 'Microsoft.Extensions.Logging.AzureAppServices, Version=8.0.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'
+
+ 
+
+   at Microsoft.AspNetCore.Hosting.AppServicesWebHostBuilderExtensions.<>c.&lt;UseAzureAppServices&gt;b__0_0(ILoggingBuilder builder)
+
+   at Microsoft.Extensions.DependencyInjection.LoggingServiceCollectionExtensions.AddLogging(IServiceCollection services, Action`1 configure)
+
+   at Microsoft.AspNetCore.Hosting.WebHostBuilderExtensions.<>c__DisplayClass8_0.&lt;ConfigureLogging&gt;b__0(IServiceCollection collection)
+
+   at Microsoft.AspNetCore.Hosting.HostingStartupWebHostBuilder.<>c__DisplayClass6_0.&lt;ConfigureServices&gt;b__0(WebHostBuilderContext context, IServiceCollection services)
+
+   at System.Action`2.Invoke(T1 arg1, T2 arg2)
+
+   at Microsoft.AspNetCore.Hosting.GenericWebHostBuilder.&lt;.ctor&gt;b__4_2(HostBuilderContext context, IServiceCollection services)
+
+   at Microsoft.AspNetCore.Hosting.BootstrapHostBuilder.RunDefaultCallbacks()
+
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder.InitializeHosting(BootstrapHostBuilder bootstrapHostBuilder)
+
+   at Microsoft.AspNetCore.Builder.WebApplicationBuilder..ctor(WebApplicationOptions options, Action`1 configureDefaults)
+
+   at Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(String[] args)
+
+   at Program.&lt;Main&gt;$(String[] args) in C:\Files\EagleNest\EaglesNest\Program.cs:line 16
+
+   </Data>
+
+</EventData>
+
+ 
+
+This file did exist (in /site/wwwroot folder), so what is up….???
+
+
+
+Azure wants version=8.0.6.0 and in the project files we have 8.0.3.0.  This requirement supercedes what you have in the project file. .Net assembles have their version numbers embedded in the file and are not in the file name.  So yes we had a file named Microsoft.Extensions.Logging.AzureAppServices, but it was not 8.0.6.0.
+
+
+
+Solution, change project file to request 8.0.6.0.
+
+
+
+Not fun
+
+ 
+
++++++
